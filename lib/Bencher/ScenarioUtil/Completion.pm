@@ -7,7 +7,7 @@ use 5.010001;
 use strict;
 use warnings;
 
-use Exporter::Rinci;
+use Exporter::Rinci qw(import);
 
 our %SPEC;
 
@@ -52,11 +52,15 @@ sub make_completion_participant {
         $res->{$_} = $args{$-} if defined($args{$_});
     }
 
+    unless (defined $res->{summary}) {
+        $res->{summary} = 'Run command (with COMP_LINE & COMP_POINT set, "^" marks COMP_POINT): ' . $args{cmdline};
+    }
+
     my $cmd = $args{cmdline};
     my $point;
     if ((my $index = index($cmd, '^')) >= 0) {
         $cmd =~ s/\^//;
-        $pos = $index;
+        $point = $index;
     } else {
         $cmd .= " " unless $cmd =~ / \z/;
         $point = length($cmd);
