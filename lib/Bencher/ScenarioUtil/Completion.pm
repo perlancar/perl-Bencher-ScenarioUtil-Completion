@@ -65,6 +65,7 @@ sub make_completion_participant {
         $cmd .= " " unless $cmd =~ / \z/;
         $point = length($cmd);
     }
+    $res->{type} = 'perl_code';
     $res->{code} = sub {
         local $ENV{COMP_LINE} = $cmd;
         local $ENV{COMP_POINT} = $point;
